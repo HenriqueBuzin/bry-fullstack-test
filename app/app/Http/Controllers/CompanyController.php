@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
@@ -13,45 +14,55 @@ class CompanyController extends Controller
         return response()->json($companies);
     }
 
-    public function show($id)
-    {
-        $company = Company::find($id);
-        if (!$company) {
-            return response()->json(['message' => 'Empresa não encontrada'], 404);
-        }
-        return response()->json($company);
-    }
-
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'cnpj' => [
+                'required',
+                'unique:companies',
+                'regex:/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/'
+            ],
+            'address' => 'required|max:255',
+        ]);
+
         $company = new Company();
-        $company->name = $request->input('name');
-        $company->cnpj = $request->input('cnpj');
-        $company->address = $request->input('address');
+        $company->name = $validatedData['name'];
+        $company->cnpj = $validatedData['cnpj'];
+        $company->address = $validatedData['address'];
         $company->save();
+
         return response()->json($company, 201);
     }
 
-    public function update(Request $request, $id)
+    public function show(Company $company)
     {
-        $company = Company::find($id);
-        if (!$company) {
-            return response()->json(['message' => 'Empresa não encontrada'], 404);
-        }
-        $company->name = $request->input('name');
-        $company->cnpj = $request->input('cnpj');
-        $company->address = $request->input('address');
-        $company->save();
         return response()->json($company);
     }
 
-    public function destroy($id)
+    public function update(Request $request, Company $company)
     {
-        $company = Company::find($id);
-        if (!$company) {
-            return response()->json(['message' => 'Empresa não encontrada'], 404);
-        }
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'cnpj' => [
+                'required',
+                Rule::unique('companies')->ignore($company->id),
+                'regex:/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/'
+            ],
+            'address' => 'required|max:255',
+        ]);
+
+        $company->name = $validatedData['name'];
+        $company->cnpj = $validatedData['cnpj'];
+        $company->address = $validatedData['address'];
+        $company->save();
+
+        return response()->json($company);
+    }
+
+    public function destroy(Company $company)
+    {
         $company->delete();
-        return response()->json(['message' => 'Empresa removida com sucesso']);
+        return response()->json([], 204);
     }
 }

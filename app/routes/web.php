@@ -8,22 +8,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('companies')->group(function () {
-    Route::get('/', [CompanyController::class, 'index'])->name('companies.index');
-    Route::get('/create', [CompanyController::class, 'create'])->name('companies.create');
-    Route::post('/', [CompanyController::class, 'store'])->name('companies.store');
-    Route::get('/{company}', [CompanyController::class, 'show'])->name('companies.show');
-    Route::get('/{company}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
-    Route::put('/{company}', [CompanyController::class, 'update'])->name('companies.update');
-    Route::delete('/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy');
-});
+// Rotas para empresas
+Route::get('/companies', [CompanyController::class, 'index']);
+Route::post('/companies', [CompanyController::class, 'store']);
+Route::get('/companies/{company}', [CompanyController::class, 'show']);
+Route::put('/companies/{company}', [CompanyController::class, 'update']);
+Route::delete('/companies/{company}', [CompanyController::class, 'destroy']);
 
-Route::prefix('employees')->group(function () {
-    Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
-    Route::get('/create', [EmployeeController::class, 'create'])->name('employees.create');
-    Route::post('/', [EmployeeController::class, 'store'])->name('employees.store');
-    Route::get('/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
-    Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-    Route::put('/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
-    Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
-});
+// Rotas para funcionários
+Route::get('/employees', [EmployeeController::class, 'index']);
+Route::post('/employees', [EmployeeController::class, 'store']);
+Route::get('/employees/{employee}', [EmployeeController::class, 'show']);
+Route::put('/employees/{employee}', [EmployeeController::class, 'update']);
+Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy']);
