@@ -15,13 +15,21 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            // login
-            // cpf
-            // e-mail
-            // endereco
-            // senha
+            $table->string('login')->unique();
+            $table->string('name');
+            $table->string('cpf')->unique();
+            $table->string('email')->unique();
+            $table->string('address');
+            $table->string('password');
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->timestamps();
+
+            // foreign key constraint
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
         });
+
+        // Remove accents from the login field
+        DB::statement('ALTER TABLE employees MODIFY login VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci');
     }
 
     /**
@@ -31,6 +39,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+        });
+
         Schema::dropIfExists('employees');
     }
 };
