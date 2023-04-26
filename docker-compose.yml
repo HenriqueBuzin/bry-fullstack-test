@@ -20,11 +20,10 @@ services:
     image: mysql:8.0
     container_name: db
     restart: unless-stopped
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
+      # MYSQL_ROOT_USER: laravel
       MYSQL_PASSWORD: laravel
       MYSQL_ROOT_PASSWORD: root
     volumes:

@@ -18,15 +18,11 @@ COPY app/ .
 # Define as permissões corretas no diretório de armazenamento de sessão
 RUN chmod -R 777 storage
 
-# Define as variáveis de ambiente para o MySQL
-ENV DB_HOST db
-ENV DB_PORT 3306
-ENV DB_DATABASE laravel
-ENV DB_USERNAME laravel
-ENV DB_PASSWORD secret
-
 # Expose port 80
 EXPOSE 80
+
+# Migra as tabelas do banco de dados
+RUN php artisan migrate
 
 # Inicia o servidor Apache
 CMD ["apache2-foreground"]
