@@ -37,5 +37,5 @@ COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 # Expose port 80
 EXPOSE 80
 
-# Entrypoint
-ENTRYPOINT ["sh", "-c", "php /var/www/html/artisan migrate && apache2-foreground"]
+# Run start.sh
+CMD ["apache2-foreground"]

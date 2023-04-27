@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: app
     restart: unless-stopped
+    tty: true
     ports:
       - "80:80"
     volumes:
@@ -41,5 +42,5 @@ services:
       - laravel
 
 networks:
-  laravel: 
+  laravel:
     driver: bridge
