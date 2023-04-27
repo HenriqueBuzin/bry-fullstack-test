@@ -3,9 +3,9 @@
 
 ## Docker
  O Projeto foi realizado em docker para executar ele deve-se usar
- docker-compose up -d
+ `docker-compose up -d`
  e então utilizar o comando
- docker exec app php artisan migrate
+ `docker exec app php artisan migrate`
 
 ## Laravel
   No laravel foi desenvolvido as rotas, os models, as validações, as migrações, controllers, entre outros.
